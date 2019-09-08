@@ -30,4 +30,6 @@ public interface TagService {
     Tag updateTag(Long id, Tag type);
 
     void deleteTag(Long id);
+
+    long getTotalTags();
 }

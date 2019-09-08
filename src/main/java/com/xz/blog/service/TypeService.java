@@ -29,4 +29,6 @@ public interface TypeService {
     Type getTypeByName(String name);
 
     List<Type> listType();
+
+    long getTotalTypes();
 }

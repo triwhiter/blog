@@ -40,24 +40,23 @@ public class BlogServiceImpl implements BlogService {
 
     @Override//组合查询，高级查询
     public Page<Blog> listBlog(Pageable pageable, BlogQuery blog) {
-
-        return blogRepository.findAll(new Specification<Blog>() {
-            @Override
-            public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates =new ArrayList<>();
-                if (!"".equals(blog.getTitle()) && blog.getTitle()!=null){
-                    predicates.add(criteriaBuilder.like(root.<String>get("title"),"%"+blog.getTitle()+"%"));
+            return blogRepository.findAll(new Specification<Blog>() {
+                @Override
+                public Predicate toPredicate(Root<Blog> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                    List<Predicate> predicates =new ArrayList<>();
+                    if (!"".equals(blog.getTitle()) && blog.getTitle()!=null){
+                        predicates.add(criteriaBuilder.like(root.<String>get("title"),"%"+blog.getTitle()+"%"));
+                    }
+                    if (blog.getTypeId() != null){
+                        predicates.add(criteriaBuilder.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
+                    }
+                    if (blog.isRecommend()){
+                        predicates.add(criteriaBuilder.equal(root.<Boolean>get("recommend"), blog.isRecommend()));
+                    }
+                    criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
+                    return null;
                 }
-                if (blog.getTypeId() != null){
-                    predicates.add(criteriaBuilder.equal(root.<Type>get("type").get("id"), blog.getTypeId()));
-                }
-                if (blog.isRecommend()){
-                    predicates.add(criteriaBuilder.equal(root.<Boolean>get("recommend"), blog.isRecommend()));
-                }
-                criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()]));
-                return null;
-            }
-        },pageable);
+            },pageable);
     }
 
     @Override
@@ -147,5 +146,10 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public void deleteBlog(Long id) {
         blogRepository.deleteById(id);
+    }
+
+    @Override
+    public long getTotalBlogs() {
+        return blogRepository.count();
     }
 }

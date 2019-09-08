@@ -23,4 +23,32 @@ public class UserServiceImpl implements UserService {
         User user= userRepository.findByUsernameAndPassword(username, MD5Utils.code(password));
         return user;
     }
+
+    @Override
+    public int updateName(Long id, String username, String nickname) {
+        return userRepository.updateById(id,username,nickname);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userRepository.findUserById(id);
+    }
+
+    @Override
+    public boolean updatePassword(User user, String originalPassword, String newPassword) {
+            String originalPasswordMd5 = MD5Utils.code(originalPassword);
+            String newPasswordMd5 = MD5Utils.code(newPassword);
+        System.out.println(newPasswordMd5);
+            //比较原密码是否正确
+            User user1=userRepository.findUserById(user.getId());
+            if (originalPasswordMd5.equals(user1.getPassword())) {
+                //设置新密码并修改
+                user.setPassword(null);
+                if (userRepository.updatePasswordById(newPasswordMd5,user1.getId()) > 0) {
+                    //修改成功则返回true
+                    return true;
+                }
+            }
+        return false;
+    }
 }

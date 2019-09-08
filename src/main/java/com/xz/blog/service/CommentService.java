@@ -14,4 +14,6 @@ public interface CommentService {
     List<Comment> listCommentByBlogId(Long id);
 
     Comment saveComment(Comment comment);
+
+    long getTotalComments();
 }

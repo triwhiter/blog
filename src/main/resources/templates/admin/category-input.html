@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<header th:replace="admin/header::header-fragment">
+</header>
+<body class="hold-transition sidebar-mini">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+<link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+<div class="wrapper">
+  <!-- 引入页面头header-fragment -->
+  <div th:replace="admin/header::header-nav"></div>
+  <!-- 引入工具栏sidebar-fragment -->
+  <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+  <!-- Content Wrapper. Contains 图标content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+      </div><!-- /.container-fluid -->
+    </div>
+  <!-- main content -->
+  <div  class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+      <form action="#" method="post"  th:object="${type}" th:action="*{id}==null ? @{/admin/types} : @{/admin/types/{id}(id=*{id})} "  class="ui form">
+        <input type="hidden" name="id" th:value="*{id}">
+        <div class=" field">
+          <div class="ui left labeled input">
+            <label class="ui teal basic label">名称</label>
+            <input type="text" name="name" placeholder="分类名称" th:value="*{name}" >
+          </div>
+        </div>
+
+        <div class="ui error message"></div>
+        <!--/*/
+        <div class="ui negative message" th:if="${#fields.hasErrors('name')}"  >
+          <i class="close icon"></i>
+          <div class="header">验证失败</div>
+          <p th:errors="*{name}">提交信息不符合规则</p>
+        </div>
+         /*/-->
+        <div class="ui right aligned container">
+          <button type="button" class="ui button" onclick="window.history.go(-1)" >返回</button>
+          <button class="ui teal submit button">提交</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  </div>
+
+  <!-- /.content-wrapper -->
+  <!-- 引入页脚footer-fragment -->
+  <div th:replace="admin/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script>
+
+  $('.menu.toggle').click(function () {
+    $('.m-item').toggleClass('m-mobile-hide');
+  });
+
+  $('.ui.dropdown').dropdown({
+    on : 'hover'
+  });
+
+  $('.ui.form').form({
+    fields : {
+      title : {
+        identifier: 'name',
+        rules: [{
+          type : 'empty',
+          prompt: '请输入分类名称'
+        }]
+      }
+    }
+  });
+
+</script>
+</body>
+</html>

@@ -75,4 +75,9 @@ public class TypeServiceImpl implements TypeService {
     public List<Type> listType() {
         return typeRepository.findAll();
     }
+
+    @Override
+    public long getTotalTypes() {
+        return typeRepository.count();
+    }
 }

@@ -31,8 +31,8 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/admin")
 public class BlogController {
 
-    private static final String INPUT = "admin/blogs-input";
-    private static final String LIST = "admin/blogs";
+    private static final String INPUT = "admin/edit";
+    private static final String LIST = "admin/blog";
     private static final String REDIRECT_LIST = "redirect:/admin/blogs";
 
     @Autowired
@@ -46,6 +46,7 @@ public class BlogController {
     public String blogs(@PageableDefault(size = 8,sort = {"updateTime"},direction = Sort.Direction.DESC) Pageable pageable, BlogQuery blog, Model model){
         model.addAttribute("types",typeService.listType());
         model.addAttribute("page",blogService.listBlog(pageable,blog));
+        model.addAttribute("path", "blogs");
         return LIST;
     }
 
@@ -53,13 +54,14 @@ public class BlogController {
     public String search(@PageableDefault(size = 8, sort = {"updateTime"}, direction = Sort.Direction.DESC) Pageable pageable,
                          BlogQuery blog, Model model) {
         model.addAttribute("page", blogService.listBlog(pageable, blog));
-        return "admin/blogs :: blogList";
+        return "admin/blog :: blogList";
     }
 
     @GetMapping("/blogs/input")
     public String input(Model model) {
         setTypeAndTag(model);
         model.addAttribute("blog", new Blog());
+        model.addAttribute("path", "edit");
         return INPUT;
     }
 
@@ -69,6 +71,7 @@ public class BlogController {
         Blog blog =blogService.getBlog(id);
         blog.init();
         model.addAttribute("blog",blog);
+        model.addAttribute("path", "edit");
         return INPUT;
     }
 

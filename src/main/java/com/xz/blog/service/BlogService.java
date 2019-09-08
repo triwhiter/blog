@@ -39,4 +39,5 @@ public interface BlogService {
 
     void deleteBlog(Long id);
 
+    long getTotalBlogs();
 }

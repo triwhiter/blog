@@ -33,19 +33,22 @@ public class TypeController {
     @GetMapping("/types")
     public String list(@PageableDefault(size = 10,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable,Model model){
         model.addAttribute("page",typeService.listType(pageable));
-        return "admin/types";
+        model.addAttribute("path", "categories");
+        return "admin/category";
     }
 
     @GetMapping("/types/input")
     public String input(Model model){
         model.addAttribute("type",new Type());
-        return "admin/types-input";
+        model.addAttribute("path", "categories");
+        return "admin/category-input";
     }
 
     @GetMapping("/types/{id}/input")
     public String editInput(@PathVariable Long id,Model model){
         model.addAttribute("type",typeService.getType(id));
-        return "admin/types-input";
+        model.addAttribute("path", "categories");
+        return "admin/category-input";
     }
 
     @PostMapping("/types")
@@ -55,7 +58,7 @@ public class TypeController {
             result.rejectValue("name","nameError","不能添加重复分类");
         }
         if (result.hasErrors()){
-            return "admin/types-input";
+            return "admin/category-input";
         }
         Type t=typeService.saveType(type);
         if (t==null){
@@ -73,7 +76,7 @@ public class TypeController {
             result.rejectValue("name","nameError","不能添加重复分类");
         }
         if (result.hasErrors()){
-            return "admin/types-input";
+            return "admin/category-input";
         }
         Type t=typeService.updateType(id,type);
         if (t==null){

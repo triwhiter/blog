@@ -30,21 +30,24 @@ public class TagController {
     private TagService tagService;
 
     @GetMapping("/tags")
-    public String tags(@PageableDefault(size = 3,sort = {"id"},direction = Sort.Direction.DESC)
+    public String tags(@PageableDefault(size = 10,sort = {"id"},direction = Sort.Direction.DESC)
                                Pageable pageable, Model model) {
         model.addAttribute("page",tagService.listTag(pageable));
-        return "admin/tags";
+        model.addAttribute("path", "tags");
+        return "admin/tag";
     }
 
     @GetMapping("/tags/input")
     public String input(Model model) {
         model.addAttribute("tag", new Tag());
+        model.addAttribute("path", "tags");
         return "admin/tags-input";
     }
 
     @GetMapping("/tags/{id}/input")
     public String editInput(@PathVariable Long id, Model model) {
         model.addAttribute("tag", tagService.getTag(id));
+        model.addAttribute("path", "tags");
         return "admin/tags-input";
     }
 

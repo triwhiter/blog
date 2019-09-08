@@ -10,4 +10,10 @@ import com.xz.blog.pojo.User;
  */
 public interface UserService {
     User checkUser(String username,String password);
+
+    int updateName(Long id, String username, String nickname);
+
+    User findById(Long id);
+
+    boolean updatePassword(User user, String originalPassword, String newPassword);
 }
